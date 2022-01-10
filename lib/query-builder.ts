@@ -3,11 +3,12 @@ import type { FieldAlias, FieldValue, Values } from "./data-types.ts";
 import { Model, ModelDefaults, ModelFields, ModelSchema } from "./model.ts";
 
 export type Query = string;
-export type Operator = ">" | ">=" | "<" | "<=" | "=";
+export type Operator = ">" | ">=" | "<" | "<=" | "=" | "like";
 export type OrderDirection = "desc" | "asc";
 export type QueryType =
   | "create"
   | "drop"
+  | "truncate"
   | "select"
   | "insert"
   | "update"
@@ -119,6 +120,11 @@ export class QueryBuilder {
   dropIfExists() {
     this._query.type = "drop";
     this._query.ifExists = true;
+    return this;
+  }
+
+  truncate() {
+    this._query.type = "truncate";
     return this;
   }
 

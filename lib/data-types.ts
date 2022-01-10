@@ -1,4 +1,7 @@
 import type { ModelSchema } from "./model.ts";
+import { Bson } from "../deps.ts";
+
+type ObjectId = Bson.ObjectId;
 
 /** Field Types. */
 export type FieldTypeString =
@@ -51,6 +54,7 @@ export type Fields =
     enum: (
       values: (number | string)[],
     ) => { type: FieldTypeString; values: (number | string)[] };
+    integer: (length: number) => { type: FieldTypeString; length: number };
   };
 
 export type FieldProps = {
@@ -65,12 +69,13 @@ export type FieldProps = {
   scale?: number;
   values?: (number | string)[];
   relationship?: Relationship;
+  comment?: string;
 };
 
 export type FieldType = FieldTypeString | FieldProps;
 
 export type FieldAlias = { [k: string]: string };
-export type FieldValue = number | string | boolean | Date | null;
+export type FieldValue = number | string | boolean | Date | ObjectId | null ;
 export type FieldOptions = {
   name: string;
   type: FieldType;
@@ -132,6 +137,13 @@ export const DATA_TYPES: Fields = {
     return {
       type: this.ENUM,
       values,
+    };
+  },
+
+  integer(length: number) {
+    return {
+      type: this.INTEGER,
+      length,
     };
   },
 };

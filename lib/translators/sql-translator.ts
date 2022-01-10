@@ -32,7 +32,7 @@ export class SQLTranslator implements Translator {
           // is used. Knex deprecated it as part of its library but in our case,
           // it actually makes sense. As this warning message should be ignored,
           // we override the `log.warn` method so it doesn't show up.
-          warn(message: string) {
+          warn() {
           },
         },
       },
@@ -124,6 +124,10 @@ export class SQLTranslator implements Translator {
           : "dropTable";
 
         queryBuilder = queryBuilder.schema[dropTableHelper](query.table);
+        break;
+
+      case "truncate":
+        queryBuilder = queryBuilder.truncate(query.table);
         break;
 
       case "create":
